@@ -1,0 +1,32 @@
+.maintenance-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100%;
+  padding: 24px;
+  text-align: center;
+}
+
+.maintenance-animation {
+  width: 100%;
+  max-width: 380px;
+  height: auto;
+  margin-bottom: 28px;
+}
+
+.maintenance-container h1 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-main);
+  margin-bottom: 12px;
+}
+
+.maintenance-container p {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  max-width: 480px;
+  margin: 0 auto;
+}
