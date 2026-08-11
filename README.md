@@ -1,16 +1,67 @@
-# React + Vite
+# Dynamic Feature Guard & Maintenance Router
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A production-ready client-side routing and gatekeeper system built with React and Vite. This project simulates an enterprise-level maintenance mode interception driven securely by local environment variables (`.env`), featuring smooth, responsive vector animations from Storyset.
 
-Currently, two official plugins are available:
+## Key Engineering Highlights
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Modular Folder Architecture:** Zero clutter. Separates global app state, routing engines, and feature modules (`features/maintenance`) using scalable, enterprise-level directory patterns.
+- **Environment-Driven Control Panel:** Implements `import.meta.env` flags to toggle application access instantly without touching or redeploying core codebase files.
+- **Global Design Token System:** Built using native CSS Custom Properties (`:root`) to handle unified professional color palettes, responsive flexbox positioning, and typography scales across individual feature modules.
+- **Semantic Web Layouts:** Designed strictly with structural HTML5 tags (`<main>`, `<section>`) for optimal web accessibility (a11y) and browser rendering performance.
 
-## React Compiler
+## System Architecture
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```text
+src/
+├── assets/          # Scalable vector graphics (SVGs) and media layouts
+├── components/      # Global, highly reusable UI presentation blocks
+├── features/        # Independent app contexts isolated by business logic
+│   └── maintenance/ # Local maintenance view components and isolated styles
+├── routes/          # Central Gatekeeper Routing Engine (AppRouter.jsx)
+├── index.css        # Root foundational resets and global design tokens
+└── main.jsx         # Absolute application mounting entry point
+```
 
-## Expanding the ESLint configuration
+## 🛠️ Local Installation & Development
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Follow these steps to run this project locally on your machine:
+
+1. **Clone the repository:**
+
+   ```bash
+   git clone https://github.com
+   ```
+
+2. **Navigate into the project directory:**
+
+   ```bash
+   cd feature-flag-guard
+   ```
+
+3. **Install modern package configurations:**
+
+   ```bash
+   npm install
+   ```
+
+4. **Configure your Local Control Switch:**
+   Create a `.env` file in the absolute root folder and paste the control key:
+
+   ```env
+   VITE_PORTAL_MAINTENANCE_MODE=true
+   ```
+
+   _(Toggle between `true` and `false` to test the dynamic gatekeeper router behavior live in the browser)._
+
+5. **Boot up the local development engine:**
+   ```bash
+   npm run dev
+   ```
+
+## What I Mastered Building This Project
+
+As a junior web developer, building this project independently helped me gain a deep, practical understanding of:
+
+1. **The Modern JSX Transform:** Moving from Create React App (CRA) to Vite, and mastering how modern bundlers compile code without needing bloated, unused runtime imports.
+2. **Deterministic Conditional Rendering:** Using JavaScript ternary operators and React Fragments safely to manage rendering states without breaking the DOM tree or exposing private data blocks.
+3. **Debugging the Build Pipeline:** Independently resolving pathing anomalies, configuration overrides, and tracking file extensions during complex asset bundling sequences.
