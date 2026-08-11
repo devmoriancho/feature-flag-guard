@@ -1,4 +1,4 @@
-import maintenanceSvg from "../../assets/maintenance-animation.svg";
+import maintenanceSvg from "../../assets/Maintenance.gif";
 import "./MaintenanceView.css";
 const MaintenanceView = () => {
   return (
