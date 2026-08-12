@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 const DashboardLayout = () => {
   return (
     <main className="dashboard-shell">
@@ -7,16 +7,16 @@ const DashboardLayout = () => {
         <nav className="sidebar-nav">
           <ul>
             <li>
-              <a href="/dashboard">Dashboard</a>
+              <NavLink to="/dashboard">Dashboard</NavLink>
             </li>
             <li>
-              <a href="/jobs">Jobs</a>
+              <NavLink to="/jobs">Jobs</NavLink>
             </li>
             <li>
-              <a href="/payouts">Payouts</a>
+              <NavLink to="/payouts">Payouts</NavLink>
             </li>
             <li>
-              <a href="/profiles"></a>My profile
+              <NavLink to="/profiles">My profile</NavLink>
             </li>
           </ul>
         </nav>
