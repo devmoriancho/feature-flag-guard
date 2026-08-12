@@ -10,14 +10,16 @@ const AppRouter = () => {
     import.meta.env.VITE_PORTAL_MAINTENANCE_MODE === "true";
   return (
     <BrowserRouter>
-      <Routes path="/" element={<DashboardLayout />}>
-        <Route index element={<Navigate to="/dashboard" replace />} />
-        <Route path="dashboard" element={<MainDashboardView />} />
-        <Route path="payouts" element={<PayoutsView />} />
-        <Route
-          path="jobs"
-          element={isMaintenanceMode ? <MaintenanceView /> : <JobsView />}
-        />
+      <Routes>
+        <Route path="/" element={<DashboardLayout />}>
+          <Route index element={<Navigate to="/dashboard" replace />} />
+          <Route path="dashboard" element={<MainDashboardView />} />
+          <Route path="payouts" element={<PayoutsView />} />
+          <Route
+            path="jobs"
+            element={isMaintenanceMode ? <MaintenanceView /> : <JobsView />}
+          />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

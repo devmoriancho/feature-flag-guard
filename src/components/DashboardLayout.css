@@ -1,9 +1,9 @@
-sidebar-panel a {
+.sidebar-panel a {
   color: #475569;
   text-decoration: none;
 }
 
-sidebar-panel a:active {
+.sidebar-panel a:active {
   color: #0f172a;
   background-color: #f1f5f9;
   font-weight: 600;

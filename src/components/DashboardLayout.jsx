@@ -1,4 +1,5 @@
 import { NavLink, Outlet } from "react-router-dom";
+import "./DashboardLayout.css";
 const DashboardLayout = () => {
   return (
     <main className="dashboard-shell">
