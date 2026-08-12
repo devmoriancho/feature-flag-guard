@@ -4,14 +4,13 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
+const connectDB = require("./config/db");
+connectDB();
+
 const app = express();
 
 app.use(cors());
 app.use(express.json());
-
-const statusRoutes = require("./routes/statusRoutes");
-
-app.use("/api", statusRoutes);
 
 const statusRoutes = require("./routes/statusRoutes");
 const configRoutes = require("./routes/configRoutes");
