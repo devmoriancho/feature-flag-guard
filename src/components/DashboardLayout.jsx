@@ -1,4 +1,5 @@
 import { NavLink, Outlet } from "react-router-dom";
+import { LayoutDashboard, Briefcase, Wallet, User } from "lucide-react";
 import "./DashboardLayout.css";
 const DashboardLayout = () => {
   return (
@@ -8,16 +9,28 @@ const DashboardLayout = () => {
         <nav className="sidebar-nav">
           <ul>
             <li>
-              <NavLink to="/dashboard">Dashboard</NavLink>
+              <NavLink to="/dashboard" className="nav-link-row">
+                <LayoutDashboard size={18} />
+                <span>Dashboard</span>
+              </NavLink>
             </li>
             <li>
-              <NavLink to="/jobs">Jobs</NavLink>
+              <NavLink to="/jobs" className="nav-link-row">
+                <Briefcase size={18} />
+                <span>Jobs</span>
+              </NavLink>
             </li>
             <li>
-              <NavLink to="/payouts">Payouts</NavLink>
+              <NavLink to="/payouts">
+                <Wallet size={18} />
+                <span>Payouts</span>
+              </NavLink>
             </li>
             <li>
-              <NavLink to="/profiles">My profile</NavLink>
+              <NavLink to="/profiles" className="nav-link-row">
+                <User size={18} />
+                <span>My profile</span>
+              </NavLink>
             </li>
           </ul>
         </nav>

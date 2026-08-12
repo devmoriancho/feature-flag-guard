@@ -32,7 +32,9 @@
 }
 
 .sidebar-nav a {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 12px;
   padding: 12px 16px;
   color: var(--text-muted);
   text-decoration: none;
