@@ -13,6 +13,12 @@ const statusRoutes = require("./routes/statusRoutes");
 
 app.use("/api", statusRoutes);
 
+const statusRoutes = require("./routes/statusRoutes");
+const configRoutes = require("./routes/configRoutes");
+
+app.use("/api", statusRoutes);
+app.use("/api", configRoutes);
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Backend server is running smoothly on port ${PORT}`);
