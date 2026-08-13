@@ -1,3 +1,4 @@
+const userRoutes = require("./routes/userRoutes");
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
@@ -17,6 +18,7 @@ const configRoutes = require("./routes/configRoutes");
 
 app.use("/api", statusRoutes);
 app.use("/api", configRoutes);
+app.use("/api/users", userRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
