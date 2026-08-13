@@ -82,6 +82,24 @@ const SignupView = () => {
           />
         </div>
 
+        <div style={{ marginBottom: "1.5rem" }}>
+          <label style={{ display: "block", marginBottom: "0.5rem" }}>
+            Secure Password
+          </label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            style={{
+              width: "100%",
+              padding: "0.5rem",
+              borderRadius: "4px",
+              border: "1px solid #ccc",
+            }}
+          />
+        </div>
+
         <button
           type="submit"
           style={{
