@@ -6,6 +6,7 @@ import MainDashboardView from "../features/dashboard/MainDashboardView";
 import PayoutsView from "../features/payouts/PayoutsView";
 import JobsView from "../features/jobs/JobsView";
 import ProfileView from "../features/profile/profileView";
+import SignupView from "../features/auth/SignupView";
 const AppRouter = () => {
   const [isMaintenanceMode, setIsMaintenanceMode] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -34,6 +35,7 @@ const AppRouter = () => {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/signup" element={<SignupView />} />
         <Route path="/" element={<DashboardLayout />}>
           <Route index element={<Navigate to="/dashboard" replace />} />
           <Route path="dashboard" element={<MainDashboardView />} />
