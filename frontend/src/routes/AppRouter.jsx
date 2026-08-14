@@ -7,6 +7,7 @@ import PayoutsView from "../features/payouts/PayoutsView";
 import JobsView from "../features/jobs/JobsView";
 import ProfileView from "../features/profile/profileView";
 import SignupView from "../features/auth/SignupView";
+import LoginView from "../features/auth/LoginView";
 const AppRouter = () => {
   const [isMaintenanceMode, setIsMaintenanceMode] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -46,6 +47,7 @@ const AppRouter = () => {
             element={isMaintenanceMode ? <MaintenanceView /> : <JobsView />}
           />
         </Route>
+        <Route path="/login" element={<LoginView />} />
       </Routes>
     </BrowserRouter>
   );
