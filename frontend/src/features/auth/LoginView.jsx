@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const LoginView = () => {
+const LoginView = ({ onLoginSuccess }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -21,6 +21,7 @@ const LoginView = () => {
 
       if (response.ok) {
         setMessage(`🚀 Success: ${data.message}`);
+        onLoginSuccess(data.user);
         setEmail("");
         setPassword("");
       } else {
