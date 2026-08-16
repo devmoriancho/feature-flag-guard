@@ -1,14 +1,53 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AppRouter from "./routes/AppRouter";
 import LoginView from "./features/auth/LoginView";
 import SignupView from "./features/auth/SignupView";
 
 const App = () => {
-  const isMaintainance =
-    import.meta.env.VITE_PORTAL_MAINTENANCE_MODE === "true";
-
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem("user");
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
   const [showSignup, setShowSignup] = useState(false);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setUser(null);
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      localStorage.removeItem("user");
+      setUser(null);
+      return;
+    }
+
+    fetch("http://localhost:5000/api/users/me", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(async (res) => {
+        if (!res.ok) {
+          throw new Error("Session invalid");
+        }
+
+        const data = await res.json();
+
+        if (data.user) {
+          localStorage.setItem("user", JSON.stringify(data.user));
+          setUser(data.user);
+        } else {
+          handleLogout();
+        }
+      })
+      .catch(() => {
+        handleLogout();
+      });
+  }, []);
 
   if (!user) {
     return (
@@ -44,7 +83,7 @@ const App = () => {
   }
   return (
     <main>
-      <AppRouter user={user} onLogout={() => setUser(null)} />
+      <AppRouter user={user} onLogout={handleLogout} />
     </main>
   );
 };

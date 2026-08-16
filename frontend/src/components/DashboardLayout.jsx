@@ -1,7 +1,8 @@
 import { NavLink, Outlet } from "react-router-dom";
-import { LayoutDashboard, Briefcase, Wallet, User } from "lucide-react";
+import { LayoutDashboard, Briefcase, Wallet, User, LogOut } from "lucide-react";
 import "./DashboardLayout.css";
-const DashboardLayout = () => {
+
+const DashboardLayout = ({ onLogout }) => {
   return (
     <main className="dashboard-shell">
       <aside className="sidebar-panel">
@@ -34,6 +35,28 @@ const DashboardLayout = () => {
             </li>
           </ul>
         </nav>
+
+        <button
+          type="button"
+          onClick={onLogout}
+          style={{
+            marginTop: "auto",
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            background: "#ef4444",
+            color: "#fff",
+            border: "none",
+            padding: "0.7rem 1rem",
+            borderRadius: "8px",
+            cursor: "pointer",
+            fontWeight: 600,
+          }}
+        >
+          <LogOut size={18} />
+          <span>Logout</span>
+        </button>
+
         <div className="sidebar-profile">Vincent Parkolwa</div>
       </aside>
       <section className="main-content-window">

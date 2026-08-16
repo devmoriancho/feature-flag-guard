@@ -8,7 +8,8 @@ import JobsView from "../features/jobs/JobsView";
 import ProfileView from "../features/profile/profileView";
 import SignupView from "../features/auth/SignupView";
 import LoginView from "../features/auth/LoginView";
-const AppRouter = () => {
+
+const AppRouter = ({ onLogout }) => {
   const [isMaintenanceMode, setIsMaintenanceMode] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -37,7 +38,7 @@ const AppRouter = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/signup" element={<SignupView />} />
-        <Route path="/" element={<DashboardLayout />}>
+        <Route path="/" element={<DashboardLayout onLogout={onLogout} />}>
           <Route index element={<Navigate to="/dashboard" replace />} />
           <Route path="dashboard" element={<MainDashboardView />} />
           <Route path="payouts" element={<PayoutsView />} />
