@@ -1,20 +1,37 @@
-const userRoutes = require("./routes/userRoutes");
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
 
 dotenv.config();
 
 const connectDB = require("./config/db");
+const userRoutes = require("./routes/userRoutes");
+const statusRoutes = require("./routes/statusRoutes");
+const configRoutes = require("./routes/configRoutes");
+
 connectDB();
 
 const app = express();
 
-app.use(cors());
+app.use(helmet());
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    credentials: true,
+  }),
+);
 app.use(express.json());
 
-const statusRoutes = require("./routes/statusRoutes");
-const configRoutes = require("./routes/configRoutes");
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 200,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { message: "Too many requests, please try again later." },
+});
+app.use("/api", apiLimiter);
 
 app.use("/api", statusRoutes);
 app.use("/api", configRoutes);

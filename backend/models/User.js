@@ -4,9 +4,9 @@ const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, "Please provide a name "],
+      required: [true, "Please provide a name"],
+      trim: true,
     },
-
     email: {
       type: String,
       required: [true, "Please provide an email address"],
@@ -14,13 +14,12 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       trim: true,
     },
-
     password: {
       type: String,
       required: [true, "Please provide a secure password"],
+      minlength: 6,
     },
-
-    creatdAt: {
+    createdAt: {
       type: Date,
       default: Date.now,
     },
