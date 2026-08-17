@@ -4,8 +4,23 @@ const User = require("../models/User");
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET || "dev-secret-change-me", {
-    expiresIn: "7d",
+    expiresIn: "1d",
   });
+};
+
+const getCookieOptions = () => ({
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "lax",
+  maxAge: 24 * 60 * 60 * 1000,
+});
+
+const attachAuthCookie = (res, token) => {
+  res.cookie("authToken", token, getCookieOptions());
+};
+
+const clearAuthCookie = (res) => {
+  res.clearCookie("authToken", getCookieOptions());
 };
 
 const getCurrentUser = async (req, res) => {
@@ -52,9 +67,11 @@ const registerUser = async (req, res) => {
       password: hashedPassword,
     });
 
+    const token = generateToken(newUser._id);
+    attachAuthCookie(res, token);
+
     res.status(201).json({
       message: "User registered successfully!",
-      token: generateToken(newUser._id),
       user: {
         id: newUser._id,
         name: newUser.name,
@@ -92,9 +109,11 @@ const loginUser = async (req, res) => {
         .json({ message: "Invalid email or password credentials" });
     }
 
+    const token = generateToken(user._id);
+    attachAuthCookie(res, token);
+
     res.status(200).json({
       message: "Login successful! Identity confirmed.",
-      token: generateToken(user._id),
       user: {
         id: user._id,
         name: user.name,
@@ -106,4 +125,9 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser, getCurrentUser };
+const logoutUser = (req, res) => {
+  clearAuthCookie(res);
+  res.status(200).json({ message: "Logout successful" });
+};
+
+module.exports = { registerUser, loginUser, getCurrentUser, logoutUser };

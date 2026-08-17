@@ -14,27 +14,21 @@ const LoginView = ({ onLoginSuccess }) => {
         headers: {
           "Content-type": "application/json",
         },
+        credentials: "include",
 
         body: JSON.stringify({ email, password }),
       });
       const data = await response.json();
 
       if (response.ok) {
-        if (data.token) {
-          localStorage.setItem("token", data.token);
-        }
-        if (data.user) {
-          localStorage.setItem("user", JSON.stringify(data.user));
-        }
-
         setMessage(`🚀 Success: ${data.message}`);
-        onLoginSuccess(data.user);
+        onLoginSuccess?.(data.user);
         setEmail("");
         setPassword("");
       } else {
         setMessage(`❌ Error: ${data.message || "Login credentials failed"}`);
       }
-    } catch (error) {
+    } catch {
       setMessage(
         "❌ Network Error: Could not connect to the authentication server.",
       );

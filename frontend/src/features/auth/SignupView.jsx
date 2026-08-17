@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const SignupView = () => {
+const SignupView = ({ onSignupSuccess }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,17 +15,15 @@ const SignupView = () => {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({ name, email, password }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        if (data.token) {
-          localStorage.setItem("token", data.token);
-        }
         if (data.user) {
-          localStorage.setItem("user", JSON.stringify(data.user));
+          onSignupSuccess?.(data.user);
         }
 
         setMessage(`🚀 Success: ${data.message}`);
@@ -35,7 +33,7 @@ const SignupView = () => {
       } else {
         setMessage(`❌ Error: ${data.message || "Signup failed"}`);
       }
-    } catch (error) {
+    } catch {
       setMessage(`❌ Network Error: Could not connect to the backend server.`);
     }
   };

@@ -8,27 +8,43 @@ const App = () => {
     const savedUser = localStorage.getItem("user");
     return savedUser ? JSON.parse(savedUser) : null;
   });
+  const [authReady, setAuthReady] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
+  const [notice, setNotice] = useState("");
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
+  const handleAuthSuccess = (userData) => {
+    if (userData) {
+      localStorage.setItem("user", JSON.stringify(userData));
+      setUser(userData);
+    } else {
+      setUser(null);
+    }
+
+    setNotice("");
+  };
+
+  const handleLogout = async (reason = "") => {
+    try {
+      await fetch("http://localhost:5000/api/users/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+    } catch {
+      // Client-side cleanup still runs even if network logout fails.
+    }
+
     localStorage.removeItem("user");
     setUser(null);
+    if (reason) {
+      setNotice(reason);
+    }
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    if (!token) {
-      localStorage.removeItem("user");
-      setUser(null);
-      return;
-    }
+    const hadSavedUser = Boolean(localStorage.getItem("user"));
 
     fetch("http://localhost:5000/api/users/me", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      credentials: "include",
     })
       .then(async (res) => {
         if (!res.ok) {
@@ -38,16 +54,40 @@ const App = () => {
         const data = await res.json();
 
         if (data.user) {
-          localStorage.setItem("user", JSON.stringify(data.user));
-          setUser(data.user);
+          handleAuthSuccess(data.user);
         } else {
-          handleLogout();
+          void handleLogout(
+            hadSavedUser ? "Your session expired. Please sign in again." : "",
+          );
         }
       })
       .catch(() => {
-        handleLogout();
+        void handleLogout(
+          hadSavedUser ? "Your session expired. Please sign in again." : "",
+        );
+      })
+      .finally(() => {
+        setAuthReady(true);
       });
   }, []);
+
+  if (!authReady) {
+    return (
+      <div
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "#f3f4f6",
+          color: "#374151",
+          fontWeight: 600,
+        }}
+      >
+        Loading your session...
+      </div>
+    );
+  }
 
   if (!user) {
     return (
@@ -60,7 +100,27 @@ const App = () => {
           justifyContent: "center",
         }}
       >
-        {showSignup ? <SignupView /> : <LoginView onLoginSuccess={setUser} />}
+        {notice && (
+          <div
+            style={{
+              marginBottom: "1rem",
+              padding: "0.75rem 1rem",
+              borderRadius: "8px",
+              background: "#fee2e2",
+              color: "#991b1b",
+              fontWeight: 600,
+              textAlign: "center",
+            }}
+          >
+            {notice}
+          </div>
+        )}
+
+        {showSignup ? (
+          <SignupView onSignupSuccess={handleAuthSuccess} />
+        ) : (
+          <LoginView onLoginSuccess={handleAuthSuccess} />
+        )}
 
         <div style={{ textAlign: "center", marginTop: "1rem" }}>
           <button
@@ -83,7 +143,11 @@ const App = () => {
   }
   return (
     <main>
-      <AppRouter user={user} onLogout={handleLogout} />
+      <AppRouter
+        user={user}
+        onAuthSuccess={handleAuthSuccess}
+        onLogout={handleLogout}
+      />
     </main>
   );
 };

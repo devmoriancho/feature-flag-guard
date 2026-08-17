@@ -9,7 +9,23 @@ import ProfileView from "../features/profile/profileView";
 import SignupView from "../features/auth/SignupView";
 import LoginView from "../features/auth/LoginView";
 
-const AppRouter = ({ onLogout }) => {
+const ProtectedRoute = ({ user, children }) => {
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
+};
+
+const PublicRoute = ({ user, children, redirectTo = "/dashboard" }) => {
+  if (user) {
+    return <Navigate to={redirectTo} replace />;
+  }
+
+  return children;
+};
+
+const AppRouter = ({ user, onAuthSuccess, onLogout }) => {
   const [isMaintenanceMode, setIsMaintenanceMode] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -27,6 +43,7 @@ const AppRouter = ({ onLogout }) => {
         setLoading(false);
       });
   }, []);
+
   if (loading) {
     return (
       <div style={{ padding: "40px", textAlign: "center" }}>
@@ -34,11 +51,26 @@ const AppRouter = ({ onLogout }) => {
       </div>
     );
   }
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/signup" element={<SignupView />} />
-        <Route path="/" element={<DashboardLayout onLogout={onLogout} />}>
+        <Route
+          path="/signup"
+          element={
+            <PublicRoute user={user}>
+              <SignupView onSignupSuccess={onAuthSuccess} />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute user={user}>
+              <DashboardLayout onLogout={onLogout} />
+            </ProtectedRoute>
+          }
+        >
           <Route index element={<Navigate to="/dashboard" replace />} />
           <Route path="dashboard" element={<MainDashboardView />} />
           <Route path="payouts" element={<PayoutsView />} />
@@ -48,7 +80,14 @@ const AppRouter = ({ onLogout }) => {
             element={isMaintenanceMode ? <MaintenanceView /> : <JobsView />}
           />
         </Route>
-        <Route path="/login" element={<LoginView />} />
+        <Route
+          path="/login"
+          element={
+            <PublicRoute user={user}>
+              <LoginView onLoginSuccess={onAuthSuccess} />
+            </PublicRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
